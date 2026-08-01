@@ -62,9 +62,22 @@ def weather_code_to_description(code):
     return mapping.get(code, "unusual weather")
 
 
+def get_api_key():
+    """Get the Anthropic API key from Streamlit secrets (cloud) or environment (local)."""
+    try:
+        return st.secrets["ANTHROPIC_API_KEY"]
+    except Exception:
+        import os
+        return os.environ.get("ANTHROPIC_API_KEY")
+
+
 def get_styling_advice(weather_summary):
     """Ask Claude to turn raw weather data into a friendly explanation + outfit advice."""
-    client = anthropic.Anthropic()  # reads ANTHROPIC_API_KEY from environment
+    api_key = get_api_key()
+    if not api_key:
+        return "⚠️ No API key found. Please add ANTHROPIC_API_KEY in your app's Secrets settings."
+
+    client = anthropic.Anthropic(api_key=api_key)
 
     prompt = f"""You are a friendly, practical personal stylist. A user gave you this weather data:
 
