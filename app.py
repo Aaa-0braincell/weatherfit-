@@ -90,7 +90,7 @@ Write a response with two short sections:
 Keep it warm, concise, and easy to read. No markdown headers, just two short paragraphs."""
 
     message = client.messages.create(
-        model="claude-sonnet-4-5",
+        model="claude-sonnet-5",
         max_tokens=400,
         messages=[{"role": "user", "content": prompt}],
     )
